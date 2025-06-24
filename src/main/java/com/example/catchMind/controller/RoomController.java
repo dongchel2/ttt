@@ -1,70 +1,60 @@
 package com.example.catchMind.controller;
 
-import com.example.catchMind.domain.Room;
-import com.example.catchMind.dto.CatchMindMessage;
 import com.example.catchMind.service.GameRoomService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/usr/room")
 public class RoomController {
 
     private final GameRoomService gameRoomService;
-    private final SimpMessagingTemplate messagingTemplate;
 
-    @GetMapping("/list")
-    public String roomList(Model model, HttpSession session) {
+    @GetMapping("/usr/room/roomList")
+    public String showRoomList(Model model) {
         model.addAttribute("rooms", gameRoomService.getAllRooms());
-        model.addAttribute("loginId", session.getAttribute("loginId"));
-        return "/WEB-INF/jsp/usr/room/roomList.jsp";
+        return "usr/room/roomList";
     }
 
-    @PostMapping("/enter")
+    @PostMapping("/usr/room/enter")
     public String enterRoom(@RequestParam int roomId, HttpSession session, Model model) {
         String loginId = (String) session.getAttribute("loginId");
-        if (loginId == null) return "redirect:/usr/home/login";
 
-        if (gameRoomService.isFull(roomId)) {
-            model.addAttribute("errorMessage", "⚠ 이미 방이 가득 찼습니다.");
-            return roomList(model, session);
+        boolean success = gameRoomService.enterRoom(roomId, loginId);
+        if (!success) {
+            model.addAttribute("errorMsg", "방 입장 실패: 인원 초과 또는 중복 입장입니다.");
+            return "usr/room/roomList";
         }
 
-        if (gameRoomService.isUserInRoom(roomId, loginId)) {
-            model.addAttribute("errorMessage", "⚠ 이미 해당 방에 참여 중입니다.");
-            return roomList(model, session);
-        }
-
-        gameRoomService.enterRoom(roomId, loginId);
         session.setAttribute("roomId", roomId);
-
-        return "/WEB-INF/jsp/usr/home/game.jsp";
+        return "redirect:/usr/room/game?roomId=" + roomId;
     }
 
-    @PostMapping("/leave")
-    public String leaveRoom(HttpSession session) {
+    @PostMapping("/usr/room/leave")
+    public String leaveRoom(@RequestParam int roomId, HttpSession session) {
         String loginId = (String) session.getAttribute("loginId");
-        Integer roomId = (Integer) session.getAttribute("roomId");
 
-        if (loginId != null && roomId != null) {
-            gameRoomService.leaveRoom(roomId, loginId);
-
-            Room room = gameRoomService.getRoom(roomId);
-            if (room != null) {
-                String newDrawer = room.getCurrentDrawer();
-                if (newDrawer != null) {
-                    messagingTemplate.convertAndSend("/topic/room/" + roomId,
-                            CatchMindMessage.drawer(newDrawer));
-                }
-            }
+        if (loginId == null) {
+            // 세션 만료 또는 비정상 접근
+            return "redirect:/usr/member/login";
         }
 
+        gameRoomService.leaveRoom(roomId, loginId);
         session.removeAttribute("roomId");
-        return "redirect:/usr/room/list";
+
+        return "redirect:/usr/room/roomList";
     }
+
+
+    @GetMapping("/usr/room/game")
+    public String showGame(@RequestParam int roomId, Model model, HttpSession session) {
+        model.addAttribute("roomId", roomId);
+        model.addAttribute("loginId", session.getAttribute("loginId"));
+        return "usr/room/game";
+    }
+    
+    
 }
