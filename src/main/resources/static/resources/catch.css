@@ -1,0 +1,174 @@
+body {
+    background-color: #0d0d0d;
+    color: #00ff88;
+    font-family: 'Courier New', Courier, monospace;
+    margin: 0;
+    padding: 0;
+}
+
+#game-container {
+    display: flex;
+    padding: 20px;
+    gap: 20px;
+}
+
+#left-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#canvas {
+    border: 2px solid #00ff88;
+    background-color: #1a1a1a;
+    cursor: crosshair;
+    border-radius: 8px;
+}
+
+#toolbar {
+    margin-top: 10px;
+    background-color: #111;
+    padding: 10px;
+    border: 1px solid #00ff88;
+    border-radius: 8px;
+}
+
+#toolbar label, #toolbar button {
+    margin-right: 10px;
+    color: #00ff88;
+}
+
+#toolbar input[type="color"],
+#toolbar input[type="range"] {
+    background-color: #111;
+    border: none;
+    border-radius: 4px;
+}
+
+#clearBtn {
+    background-color: #222;
+    border: 1px solid #00ff88;
+    color: #00ff88;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+#right-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#info-panel {
+    background-color: #111;
+    padding: 10px;
+    border: 1px solid #00ff88;
+    border-radius: 8px;
+}
+
+#roundInfo, #timer, #drawerInfo, #answerArea {
+    margin-top: 5px;
+}
+
+#timer {
+    font-weight: bold;
+    color: #ff4081;
+}
+
+#readyBtn, #leaveBtn {
+    margin-top: 10px;
+    background-color: #222;
+    border: 1px solid #00ff88;
+    color: #00ff88;
+    padding: 5px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#score-panel {
+    background-color: #111;
+    border: 1px solid #00ff88;
+    border-radius: 8px;
+    padding: 10px;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+#scoreList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#chat-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+#chatArea {
+    flex: 1;
+    background-color: #111;
+    border: 1px solid #00ff88;
+    border-radius: 8px;
+    padding: 10px;
+    overflow-y: auto;
+    height: 200px;
+    font-size: 14px;
+}
+
+#chatForm {
+    display: flex;
+    margin-top: 10px;
+}
+
+#chatInput {
+    flex: 1;
+    padding: 6px;
+    border: 1px solid #00ff88;
+    border-radius: 5px;
+    background-color: #1a1a1a;
+    color: #00ff88;
+}
+
+#chatForm button {
+    background-color: #222;
+    border: 1px solid #00ff88;
+    color: #00ff88;
+    padding: 5px 10px;
+    margin-left: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#replayModal {
+    position: fixed;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #000;
+    border: 2px solid #00ff88;
+    padding: 20px;
+    z-index: 1000;
+    color: #00ff88;
+    border-radius: 10px;
+    box-shadow: 0 0 10px #00ff88;
+}
+
+#replayCanvas {
+    border: 1px solid #00ff88;
+    background-color: #1a1a1a;
+    margin-bottom: 10px;
+}
+
+#replayModal button {
+    background-color: #111;
+    color: #00ff88;
+    border: 1px solid #00ff88;
+    padding: 6px 12px;
+    margin-right: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}

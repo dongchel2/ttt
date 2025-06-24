@@ -1,0 +1,17 @@
+
+spring:
+  application:
+    name: demo
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/SB_AM
+    username: root
+    password: 
+  mvc:
+    view:
+      prefix: /WEB-INF/jsp/
+      suffix: .jsp
+server:
+  port: 8078
+#  servlet:
+#    context-path: /test
